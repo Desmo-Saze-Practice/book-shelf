@@ -3,6 +3,26 @@
 // afin de créer notre serveur
 const http = require('http');
 
+
+// formating date with dayjs module
+var dayjs = require('dayjs');
+
+// to get element age
+var relativeTime = require('dayjs/plugin/relativeTime')
+dayjs.extend(relativeTime)
+
+// for advanced format
+var advancedFormat = require('dayjs/plugin/advancedFormat')
+dayjs.extend(advancedFormat)
+
+var localizedFormat = require('dayjs/plugin/localizedFormat');
+dayjs.extend(localizedFormat);
+dayjs().format('');
+
+dayjs.locale('fr');
+
+const host = 'http://localhost:3000';
+
 // Séléction de livres incontournables
 const books = [
     {
@@ -41,9 +61,14 @@ const books = [
         date: "1989-02-15"
     }
 ];
-
+const drawTable = books.forEach(index => {
+    `    <tr>
+    <p>YO</p>
+    </tr>`
+});
 // Création de notre serveur
 const server = http.createServer((req, res) => {
+
 
     // On court-circuite l'appel automatique du navigateur au favicon.ico
     // sinon l'appel au script ce fera 2 fois et il ecrira "Hum, 50 alors ?" dedans
@@ -58,17 +83,57 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
 
     // On écrit l'entête de notre page html
-    res.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge">    <title>Document</title></head><body>');
+    res.write(`<!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+    </head>
+    <body>
+    <table>
+    <tbody>
+    `);
 
     // Corps de la page
-    res.write('<p>REMPLIR ICI</p>')
+    books.forEach(book => {
+        
+        let bookDate = dayjs(book.date).format('YYYY-MM-DD');
+        console.log('book year is ', bookDate);
+
+        let bookAge = dayjs().to(dayjs(bookDate));
+        console.log('fuck ', bookAge);
+
+        let bookPublicationDate = dayjs(book.date).format('dddd MMMM Do YYYY');
+        console.log('book date formated ', bookPublicationDate);
+        
+
+        res.write(`
+        <tr>
+            <td>${book.title}</td>
+            <td>${book.language}</td>
+            <td>${book.country}</td>
+            <td>${book.author}</td>
+            <td>${bookPublicationDate}</td>
+            <td>${bookAge}</td>
+        </tr>`
+        );
+    });
 
     // On écrit le pied de page de notre page html
-    res.write('</body></html>');
+    res.write(`
+    </tbody>
+    </table>
+    </body>
+    </html>`);
 
     // On à fini d'envoyer nos informations au client
     res.end();
+
 });
 
 // Notre serveur sera sur le port 3000
-server.listen(3000);
+server.listen(3000, () => {
+    console.log(`server live at ${host}`);
+});

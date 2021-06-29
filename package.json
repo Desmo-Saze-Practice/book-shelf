@@ -1,0 +1,24 @@
+{
+  "name": "S03E03-bookshelf-FlorianMartinDesmoSaze",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Desmo-Saze-Practice/book-shelf.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Desmo-Saze-Practice/book-shelf/issues"
+  },
+  "homepage": "https://github.com/Desmo-Saze-Practice/book-shelf#readme",
+  "dependencies": {
+    "dayjs": "^1.10.5"
+  },
+  "devDependencies": {},
+  "description": ""
+}
