@@ -15,10 +15,13 @@ dayjs.extend(relativeTime)
 var advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
 
-var localizedFormat = require('dayjs/plugin/localizedFormat');
-dayjs.extend(localizedFormat);
-dayjs().format('');
 
+// for locales
+const localizedFormat = require('dayjs/plugin/localizedFormat');
+// const { locale } = require('dayjs/locale/fr');
+dayjs.extend(localizedFormat);
+
+require('dayjs/locale/fr');
 dayjs.locale('fr');
 
 const host = 'http://localhost:3000';
@@ -93,6 +96,16 @@ const server = http.createServer((req, res) => {
     </head>
     <body>
     <table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Language</th>
+            <th>Country</th>
+            <th>Author</th>
+            <th>Publication date</th>
+            <th>Age</th>
+        </tr>
+    </thead>
     <tbody>
     `);
 
@@ -100,14 +113,10 @@ const server = http.createServer((req, res) => {
     books.forEach(book => {
         
         let bookDate = dayjs(book.date).format('YYYY-MM-DD');
-        console.log('book year is ', bookDate);
 
-        let bookAge = dayjs().to(dayjs(bookDate));
-        console.log('fuck ', bookAge);
+        let bookAge = dayjs(book.date).fromNow(true);
 
-        let bookPublicationDate = dayjs(book.date).format('dddd MMMM Do YYYY');
-        console.log('book date formated ', bookPublicationDate);
-        
+        let bookPublicationDate = dayjs(book.date).format('dddd Do MMMM YYYY');
 
         res.write(`
         <tr>
